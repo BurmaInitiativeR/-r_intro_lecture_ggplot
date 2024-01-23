@@ -1,0 +1,102 @@
+---
+title: "r_int_ggplot"
+author: "Nicholus Tint Zaw"
+date: "2024-01-23"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(ggplot2)
+```
+
+
+# Reference
+
+reference: ggplot2: Elegant Graphics for Data Analysis (3e)
+https://ggplot2-book.org/introduction 
+
+
+# What is the grammar of graphics?
+
+how the data’s variables are mapped to aesthetic attributes 
+
+1. Layer: collection of geometric elements and statistical transformations  
+
+    - Geometric elements, geoms for short, represent what you actually see in the plot: points, lines, polygons, etc.  
+    - Statistical transformations, stats for short, summarise the data    
+  
+2. Scales: map values in the data space to values in the aesthetic space. This includes the use of colour, shape or size
+3. Coord: coordinate system, describes how data coordinates are mapped to the plane of the graphic
+4. Facet: how to break up and display subsets of data as small multiples
+5. Theme: controls the finer points of display, like the font size and background colour
+
+
+# Build a plot layer by layer
+
+
+## Building a plot 
+
+```{r}
+p <- ggplot(mpg, aes(displ, hwy))
+p
+
+p + geom_point()
+
+```
+
+
+```{r}
+
+
+mpg %>% 
+  ggplot(aes(displ, hwy)) +
+  geom_point(aes(color = class))
+
+
+```
+
+
+
+```{r}
+
+ggplot(mpg, aes(trans, cty)) + 
+  geom_point() + 
+  geom_point(stat = "summary", fun = "mean", colour = "red", size = 4) 
+
+
+
+ggplot(mpg, aes(trans, cty)) + 
+  geom_point() + 
+  geom_point(stat = "summary", fun = "mean", colour = "red", size = 2) +
+  geom_point(stat = "summary", fun = "median", colour = "blue", size = 2)
+
+
+ggplot(mpg, aes(trans, cty)) + 
+  geom_point() + 
+  geom_point(stat = "summary", fun = "mean", colour = "red", size = 2) +
+  geom_point(stat = "summary", fun = "median", colour = "blue", size = 2) + 
+  coord_flip()
+
+
+
+
+```
+
+
+```{r, fig.height= 10, fig.width = 7}
+ggplot(mpg, aes(trans, cty)) + 
+  geom_point() + 
+  geom_point(stat = "summary", fun = "mean", colour = "red", size = 2) +
+  geom_point(stat = "summary", fun = "median", colour = "blue", size = 2) + 
+  coord_flip() +
+  facet_wrap(~class, ncol = 2)
+```
+
+
+
